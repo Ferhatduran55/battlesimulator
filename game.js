@@ -106,14 +106,40 @@ $(document).ready(function(){
     $("#defenderTier").text(tier[1]);
     setInterval(function(){
         if(end==false){
+            var att = 1;
+            switch(unit[0]){
+                case "I":
+                    att = 1.2;
+                break;
+                case "II":
+                    att = 1.6;
+                break;
+                case "III":
+                    att = 2.0;
+                break;
+            }
+            var def = 1;
+            switch(unit[1]){
+                case "I":
+                    def = 1.2;
+                break;
+                case "II":
+                    def = 1.6;
+                break;
+                case "III":
+                    def = 2.0;
+                break;
+            }
             xle[0] = Math.random();
             xle[1] = Math.random();
-            xle[2] = xle[0]*10;
-            xle[3] = xle[1]*10;
+            xle[2] = ((xle[0]*5)*att)*(attackers/(Math.random()*100));
+            xle[3] = ((xle[1]*5)*def)*(defenders/(Math.random()*100));
             xle[4] = $("#bar").width();
             xle[5] = xle[4]+10;
             xle[6] = xle[4]-10;
             xle[7] = $(".result").text();
+            $(".log").append("<li class='attackersLog'> Attackers: "+xle[2]+"</li>");
+            $(".log").append("<li class='defendersLog'> Defenders: "+xle[3]+"</li>");
         }
     },100);
     function Winner(){
@@ -145,16 +171,42 @@ $(document).ready(function(){
     }
     function Attack(){
         if(end==false && attack==null){
+            var attackerUnit = 1;
+            switch(unit[0]){
+                case "I":
+                    attackerUnit = 1.2;
+                break;
+                case "II":
+                    attackerUnit = 1.6;
+                break;
+                case "III":
+                    attackerUnit = 2.0;
+                break;
+            }
             var beforeAttack=xle[2];
-            attack=(Math.random()*10)*(attackers/2);
-            xle[2]+=attack;console.log("Attack:"+attack+"\nBefore:"+beforeAttack+"\nAfter:"+xle[2]);
+            attack=(Math.random()*attackerUnit)*(attackers);
+            xle[2]+=attack;
+            console.log("Attack:"+attack+"\nBefore:"+beforeAttack+"\nAfter:"+xle[2]);
         }
     }
     function Defend(){
         if(end==false && defend==null){
+            var defenderUnit = 1;
+            switch(unit[1]){
+                case "I":
+                    defenderUnit = 1.2;
+                break;
+                case "II":
+                    defenderUnit = 1.6;
+                break;
+                case "III":
+                    defenderUnit = 2.0;
+                break;
+            }
             var beforeDefend=xle[3];
-            defend=(Math.random()*10)*(defenders/2);
-            xle[3]+=defend;console.log("Defend:"+defend+"\nBefore:"+beforeDefend+"\nAfter:"+xle[3]);
+            defend=(Math.random()*defenderUnit)*(defenders);
+            xle[3]+=defend;
+            console.log("Defend:"+defend+"\nBefore:"+beforeDefend+"\nAfter:"+xle[3]);
         }
     }
     $(document).on('keyup',function(event) {if(event.keyCode == 65 || event.keyCode==37) {Attack();}});
@@ -164,27 +216,29 @@ $(document).ready(function(){
     setInterval(function(){
         if(attack!=null){
             xle[2]+=attack;
+            $(".log").append("<li class='attackersLog' style='color:darkred;'> Attackers: "+xle[2]+"</li>");
             attack=null;
         }
         if(defend!=null){
             xle[3]+=defend;
+            $(".log").append("<li class='defendersLog' style='color:darkblue;'> Defenders: "+xle[3]+"</li>");
             defend=null;
         }
         if(xle[2]>xle[3] && end==false){
             if(xle[4]<=490 && xle[4]>=10){
-                 $("#bar").css({"width":xle[5],});
-                 score-=4;
-                 $(".score").text(score);
-                 Result();
+                $("#bar").css({"width":xle[5],});
+                score-=4;
+                $(".score").text(score);
+                Result();
             }else if(xle[4]>=500 && end==false){
                 if(xle[7]!="Attackers Won!"){
-                     $(".result").text("Attackers Won!");
+                    $(".result").text("Attackers Won!");
                     $("title").text("Attackers Won!");
                     $(".defenderCount").css({"text-decoration":"line-through red 5px"});
                     $(".build").css({"color":"rgb(255,0,0)"});
                     $(".result").css({"color":"red","text-shadow":"0 0 20px black"});
                 }xle[4]=null;end=true;Winner();
-             }
+            }
         }
         else if(xle[3]>xle[2] && end==false){
             if(xle[4]>=10 && xle[4]<=490){
@@ -199,7 +253,7 @@ $(document).ready(function(){
                     $(".attackerCount").css({"text-decoration":"line-through blue 5px"});
                     $(".result").css({"color":"blue","text-shadow":"0 0 20px black"});
                 }xle[4]=null;end=true;Winner();
-             }
+            }
         }
     },100);
 });

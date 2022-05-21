@@ -5,7 +5,7 @@ body{
 }
 .main{
 	width: 700px;
-	height: 700px;
+	height: initial;
 	margin: 20px auto;
 	font-family: 'Press Start 2P', cursive !important;
 }
@@ -140,4 +140,40 @@ body{
 	justify-content: right;
 	background-color:rgba(0, 0, 255, .9);
 	border-color:rgba(0, 0, 120, .9);
+}
+.log{
+	user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	margin: 0 auto;
+	margin-top:160px;
+	width: 500px;
+	font-size:.5rem;
+	height: inherit;
+	border:dashed 1px rgba(0,0,0,.5);
+	background-color:rgba(212, 212, 212, .9);
+	border-radius: .5rem;
+	list-style-type: none;
+	display: flex;
+	flex-direction: column-reverse;
+}
+.log .attackersLog{
+	display: inline-flex;
+	flex-direction: column;
+	align-items: flex-start;
+	margin:5px;
+	flex: 0 0 auto;
+	justify-content: left;
+	color:rgba(255, 0, 0, .9);
+}
+.log .defendersLog{
+	display: inline-flex;
+	flex-direction: column;
+	align-items: flex-end;
+	margin:5px;
+	flex: 0 0 auto;
+	justify-content: right;
+	color:rgba(0, 0, 255, .9);
 }
