@@ -21,6 +21,7 @@ $(document).ready(function(){
     var defenders=parseInt(Math.random()*100);
     var selected=null;
     var end=false;
+    var timer = 100;
     var xle = new Array(8);
     var tier = new Array(2);
     var tiers = [
@@ -135,13 +136,13 @@ $(document).ready(function(){
             xle[2] = ((xle[0]*5)*att)*(attackers/(Math.random()*100));
             xle[3] = ((xle[1]*5)*def)*(defenders/(Math.random()*100));
             xle[4] = $("#bar").width();
-            xle[5] = xle[4]+10;
-            xle[6] = xle[4]-10;
+            xle[5] = xle[4]+2.5;
+            xle[6] = xle[4]-2.5;
             xle[7] = $(".result").text();
             $(".log").append("<li class='attackersLog'> Attackers: "+xle[2]+"</li>");
             $(".log").append("<li class='defendersLog'> Defenders: "+xle[3]+"</li>");
         }
-    },100);
+    },timer);
     function Winner(){
         if(end==false){
             if(xle[7]=="Attackers Won!"){
@@ -153,12 +154,12 @@ $(document).ready(function(){
     }
     function Result(){
         if(winner==null && end==false){
-            if(score>0 && score<=96){
+            if(score>0 && score<=99){
                 if(xle[7]!="Attackers Won!" && xle[7]!="Attackers Losing!"){
                     $(".result").text("Attackers Losing!");
                     $("title").text("Attackers Losing!");
                 }
-            }else if(score<0 && score>=-96){
+            }else if(score<0 && score>=-99){
                 if(xle[7]!="Defenders Won!" && xle[7]!="Defenders Losing!"){
                     $(".result").text("Defenders Losing!");
                     $("title").text("Defenders Losing!");
@@ -186,7 +187,7 @@ $(document).ready(function(){
             var beforeAttack=xle[2];
             attack=(Math.random()*attackerUnit)*(attackers);
             xle[2]+=attack;
-            console.log("Attack:"+attack+"\nBefore:"+beforeAttack+"\nAfter:"+xle[2]);
+            /*console.log("Attack:"+attack+"\nBefore:"+beforeAttack+"\nAfter:"+xle[2]);*/
         }
     }
     function Defend(){
@@ -206,7 +207,7 @@ $(document).ready(function(){
             var beforeDefend=xle[3];
             defend=(Math.random()*defenderUnit)*(defenders);
             xle[3]+=defend;
-            console.log("Defend:"+defend+"\nBefore:"+beforeDefend+"\nAfter:"+xle[3]);
+            /*console.log("Defend:"+defend+"\nBefore:"+beforeDefend+"\nAfter:"+xle[3]);*/
         }
     }
     $(document).on('keyup',function(event) {if(event.keyCode == 65 || event.keyCode==37) {Attack();}});
@@ -225,9 +226,9 @@ $(document).ready(function(){
             defend=null;
         }
         if(xle[2]>xle[3] && end==false){
-            if(xle[4]<=490 && xle[4]>=10){
+            if(xle[4]<=497.5 && xle[4]>=2.5){
                 $("#bar").css({"width":xle[5],});
-                score-=4;
+                score-=1;
                 $(".score").text(score);
                 Result();
             }else if(xle[4]>=500 && end==false){
@@ -241,11 +242,11 @@ $(document).ready(function(){
             }
         }
         else if(xle[3]>xle[2] && end==false){
-            if(xle[4]>=10 && xle[4]<=490){
-                 $("#bar").css({"width":xle[6],});
-                 score+=4;
-                 $(".score").text(score);
-                 Result();
+            if(xle[4]>=2.5 && xle[4]<=497.5){
+                $("#bar").css({"width":xle[6],});
+                score+=1;
+                $(".score").text(score);
+                Result();
             }else if(xle[4]<=0 && end==false){
                 if(xle[7]!="Defenders Won!"){
                     $(".result").text("Defenders Won!");
@@ -255,5 +256,11 @@ $(document).ready(function(){
                 }xle[4]=null;end=true;Winner();
             }
         }
-    },100);
+    },timer);
+    $(".notifyButton").on("click",function(){
+        $(".notifyButton").toggleClass("toggle");
+        $(".notify").toggleClass("hidden");
+    });
+    var notifyText = "Notes:<br>-x random number<br>-y unit bonus<br>-z number of sides<br><br>Score Formula:<br>( ( x * 5 ) * y ) * ( z / ( x * 100 ) )<br><br>Unit Bonuses:<br>I. x1.2<br>II. x1.6<br>III. x2.0<br><br>Shortcuts:<br>A&Left arrow key - Attackers<br>D&Right arrow key - Defenders";
+    $(".notify").html(notifyText);
 });
