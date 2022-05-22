@@ -257,10 +257,22 @@ $(document).ready(function(){
             }
         }
     },timer);
-    $(".notifyButton").on("click",function(){
-        $(".notifyButton").toggleClass("toggle");
-        $(".notify").toggleClass("hidden");
-    });
     var notifyText = "Notes:<br>-x random number<br>-y unit bonus<br>-z number of sides<br><br>Score Formula:<br>( ( x * 5 ) * y ) * ( z / ( x * 100 ) )<br><br>Unit Bonuses:<br>I. x1.2<br>II. x1.6<br>III. x2.0<br><br>Shortcuts:<br>A&Left arrow key - Attackers<br>D&Right arrow key - Defenders";
-    $(".notify").html(notifyText);
+    $(".notify").append(notifyText);
+    var modal = $(".modal");
+    var btn = $(".notifyButton");
+    var span = $(".close");
+    btn.on("click",function(){
+        modal.css({"display":"block"});
+        btn.toggleClass("toggle");
+    });
+    span.on("click",function(){
+        modal.css({"display":"none"});
+        btn.toggleClass("toggle");
+    });
+    modal.on("click",function(event){
+        if(event.target == modal){
+            modal.css({"display":"none"});
+        }
+    });
 });
